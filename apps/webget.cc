@@ -7,18 +7,43 @@
 using namespace std;
 
 void get_URL(const string &host, const string &path) {
-    // Your code here.
+/*
+    Address address = Address(host,"80");
+    
+    TCPSocket tcpSock = TCPSocket( );
+    
+    tcpSock.connect(address);
 
-    // You will need to connect to the "http" service on
-    // the computer whose name is in the "host" string,
-    // then request the URL path given in the "path" string.
-
-    // Then you'll need to print out everything the server sends back,
-    // (not just one call to read() -- everything) until you reach
-    // the "eof" (end of file).
-
+    std::string request="GET "+path+" "+"HTTP/1.1\r\n"+
+    "Host: "+host+"\r\n"+
+    "Connection: close\r\n\r\n";
+  
+    tcpSock.write(request);
+    
+    tcpSock.shutdown(SHUT_WR);
+    
+    while ( tcpSock.eof() == false )
+    {
+        std::string str;
+        tcpSock.read(str);
+        cerr << str << '\n';
+    }
+    
+    tcpSock.close();
+    
     cerr << "Function called: get_URL(" << host << ", " << path << ").\n";
-    cerr << "Warning: get_URL() has not been implemented yet.\n";
+*/
+TCPSocket socket1;
+    socket1.connect(Address(host,"80"));
+    //这两个字段是类似上面2.1实验的
+    auto request = "GET "+path+" HTTP/1.1\r\n"+"Host: "+host+"\r\n";
+    auto request_close = "Connection: close\r\n\r\n";
+    socket1.write(request + request_close);
+    //获得响应
+    while(!socket1.eof()){
+        cout << socket1.read();
+    }
+    socket1.close();
 }
 
 int main(int argc, char *argv[]) {
